@@ -9,8 +9,11 @@
   },
   "dependencies": {
     "autoprefixer": "^10.2.4",
+    "clsx": "^1.1.1",
+    "date-fns": "^2.16.1",
     "next": "10.0.5",
     "postcss": "^8.2.4",
+    "ramda": "^0.27.1",
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "tailwindcss": "^2.0.2"
