@@ -48,7 +48,7 @@ const run = async () => {
   const data = await readFileData(filePath);
   const outputData = convertTo(data);
   const date = format("yyyyMMdd", outputData[0].date);
-  const writePath = path.join(__dirname, "../../server/data/", `${date}.json`);
+  const writePath = path.join(__dirname, "../../data/", `${date}.json`);
 
   await fs.writeFile(writePath, JSON.stringify(outputData, null, 2), "utf8");
 };
