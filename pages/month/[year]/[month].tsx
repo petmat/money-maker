@@ -1,13 +1,15 @@
 import * as R from "ramda";
 
-import { ReactNode, useEffect, useState } from "react";
+import React, { ReactNode, useEffect, useState } from "react";
 
 import Amount from "../../../components/Amount";
 import Button from "../../../components/Button";
 import Link from "next/link";
 import { Transaction } from "../../../types/Transaction";
 import TransactionList from "../../../components/TransactionList";
-import { monthNumberToName } from "../../../utils/months";
+import { monthNameToNumber, monthNumberToName } from "../../../utils/months";
+import { useRouter } from "next/router";
+import { firstArg } from "../../../utils/args";
 
 interface AccountMonthInfo {
   initialBalance: number | null;
@@ -37,7 +39,7 @@ interface RouteParams {
 
 const getTransactions = async (year: number, month: number) => {
   const response = await fetch(
-    `http://localhost:5000/api/transactions/${year}/${month}`
+    `http://localhost:3000/api/transactions/${year}/${month}`
   );
   const data: Transaction[] = await response.json();
   return data;
@@ -45,20 +47,19 @@ const getTransactions = async (year: number, month: number) => {
 
 const getInitialBalance = async (year: number, month: number) => {
   const response = await fetch(
-    `http://localhost:5000/api/initial-balance/${year}/${month}`
+    `http://localhost:3000/api/initial-balance/${year}/${month}`
   );
   const { initialBalance }: AccountMonthInfo = await response.json();
   return initialBalance;
 };
 
-const Home = () => {
+const Month = () => {
+  const [year, setYear] = useState<number>();
+  const [month, setMonth] = useState<number>();
   const [startBalance, setStartBalance] = useState<number>();
   const [endBalance, setEndBalance] = useState<number>();
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [showAllTransactions, setShowAllTransactions] = useState(false);
-
-  const year = new Date().getFullYear();
-  const month = new Date().getMonth() + 1;
 
   useEffect(() => {
     const fetchTransactions = async () => {
@@ -80,6 +81,19 @@ const Home = () => {
     };
     fetchTransactions().catch(console.error);
   }, [year, month]);
+
+  const router = useRouter();
+  const { year: routeYear, month: routeMonth } = router.query;
+
+  useEffect(() => {
+    if (routeYear && routeMonth) {
+      setYear(parseInt(firstArg(routeYear)));
+      setMonth(monthNameToNumber(firstArg(routeMonth)));
+    } else {
+      setYear(new Date().getFullYear());
+      setMonth(new Date().getMonth() + 1);
+    }
+  }, [routeYear, routeMonth]);
 
   const difference =
     endBalance && startBalance ? endBalance - startBalance : undefined;
@@ -148,13 +162,13 @@ const Home = () => {
                 <h3 className="text-xl text-gray-400">Largest withdrawals</h3>
                 <div className={`grid grid-cols-withdrawalTable mt-4`}>
                   {topWithdrawals.map(({ payee, amount }, index) => (
-                    <>
+                    <React.Fragment key={index}>
                       <div className="p-2">{index + 1}.</div>
                       <div className="p-2">{payee}</div>
                       <div className="p-2 text-right">
                         <Amount amount={amount} />
                       </div>
-                    </>
+                    </React.Fragment>
                   ))}
                 </div>
               </div>
@@ -166,4 +180,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Month;
