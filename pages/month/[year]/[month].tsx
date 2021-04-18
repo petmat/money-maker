@@ -2,12 +2,12 @@ import * as R from "ramda";
 
 import { ReactNode, useEffect, useState } from "react";
 
-import Amount from "../components/Amount";
-import Button from "../components/Button";
+import Amount from "../../../components/Amount";
+import Button from "../../../components/Button";
 import Link from "next/link";
-import { Transaction } from "../types/Transaction";
-import TransactionList from "../components/TransactionList";
-import { monthNumberToName } from "../utils/months";
+import { Transaction } from "../../../types/Transaction";
+import TransactionList from "../../../components/TransactionList";
+import { monthNumberToName } from "../../../utils/months";
 
 interface AccountMonthInfo {
   initialBalance: number | null;
@@ -37,7 +37,7 @@ interface RouteParams {
 
 const getTransactions = async (year: number, month: number) => {
   const response = await fetch(
-    `http://localhost:3000/api/transactions/${year}/${month}`
+    `http://localhost:5000/api/transactions/${year}/${month}`
   );
   const data: Transaction[] = await response.json();
   return data;
@@ -45,7 +45,7 @@ const getTransactions = async (year: number, month: number) => {
 
 const getInitialBalance = async (year: number, month: number) => {
   const response = await fetch(
-    `http://localhost:3000/api/initial-balance/${year}/${month}`
+    `http://localhost:5000/api/initial-balance/${year}/${month}`
   );
   const { initialBalance }: AccountMonthInfo = await response.json();
   return initialBalance;
