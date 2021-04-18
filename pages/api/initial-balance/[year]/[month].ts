@@ -14,7 +14,10 @@ const pad = (str, char, min) =>
 
 const findFile = (fileNames, year, month) => {
   const foundFile = fileNames.find((f) => {
-    return getYear(f) === year && getMonth(f) === pad(month.toString(), "0", 2);
+    return (
+      getYear(f) === year.toString() &&
+      getMonth(f) === pad(month.toString(), "0", 2)
+    );
   });
   return foundFile;
 };
