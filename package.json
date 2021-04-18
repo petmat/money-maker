@@ -6,6 +6,7 @@
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
+    "start:prod": "next start -p $PORT",
     "convert-file": "node scripts/data-to-json"
   },
   "dependencies": {
