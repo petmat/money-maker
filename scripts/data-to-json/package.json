@@ -1,0 +1,11 @@
+{
+  "name": "data-to-json",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "dependencies": {
+    "date-fns": "^2.16.1",
+    "ramda": "^0.27.1",
+    "windows-1252": "^1.0.0"
+  }
+}
