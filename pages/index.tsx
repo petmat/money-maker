@@ -30,11 +30,6 @@ const Card = ({ title, children, className }: CardProps) => {
   );
 };
 
-interface RouteParams {
-  year?: string;
-  month?: string;
-}
-
 const getTransactions = async (year: number, month: number) => {
   const response = await fetch(
     `http://localhost:3000/api/transactions/${year}/${month}`
@@ -94,7 +89,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="flex flex-wrap justify-center">
+      <div className="flex flex-col items-center">
         <div className="w-192 flex justify-center">
           <h1 className="text-8xl">
             {month && monthNumberToName(month)} {year}
